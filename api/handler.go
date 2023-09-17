@@ -197,7 +197,7 @@ func GetByIds(applyId string) {
 	fmt.Println(string(readFile))
 
 	fmt.Println("req.Body GetByIds", req.Body)
-	fmt.Println("applicant.Applicant: ", applies.VacancyId)
+	fmt.Println("applies.VacancyId: ", applies.VacancyID)
 
 }
 
@@ -218,39 +218,42 @@ type ApplicantNew struct {
 }
 
 type Applies struct {
-	Id            string    `json:"id"`
-	NegotiationId int       `json:"negotiation_id"`
-	Type          string    `json:"type"`
-	CreatedAt     time.Time `json:"created_at"`
-	UpdatedAt     time.Time `json:"updated_at"`
-	Prevalidation struct {
-		Status  string `json:"status"`
-		Summary []struct {
-			Label    string `json:"label"`
-			Value    string `json:"value"`
-			Variable string `json:"variable"`
-		} `json:"summary"`
-	} `json:"prevalidation"`
-	Applicant struct {
-		Id       string `json:"id"`
-		ResumeId string `json:"resume_id"`
-		Data     struct {
-			Name        string `json:"name"`
-			Gender      string `json:"gender"`
-			Citizenship string `json:"citizenship"`
-		} `json:"data"`
-	} `json:"applicant"`
-	Contacts struct {
-		Chat struct {
-			Value string `json:"value"`
-		} `json:"chat"`
-		Phones []struct {
-			Value  string      `json:"value"`
-			Status interface{} `json:"status"`
-		} `json:"phones"`
-	} `json:"contacts"`
-	VacancyId  int64       `json:"vacancy_id"`
-	EmployeeId interface{} `json:"employee_id"`
+	VacancyID int64 `json:"vacancy_id"`
+	Applies   []struct {
+		ID            string    `json:"id"`
+		NegotiationID int       `json:"negotiation_id"`
+		Type          string    `json:"type"`
+		CreatedAt     time.Time `json:"created_at"`
+		UpdatedAt     time.Time `json:"updated_at"`
+		Prevalidation struct {
+			Status  string `json:"status"`
+			Summary []struct {
+				Label    string `json:"label"`
+				Value    string `json:"value"`
+				Variable string `json:"variable"`
+			} `json:"summary"`
+		} `json:"prevalidation"`
+		Applicant struct {
+			ID       string `json:"id"`
+			ResumeID string `json:"resume_id"`
+			Data     struct {
+				Name        string `json:"name"`
+				Gender      string `json:"gender"`
+				Citizenship string `json:"citizenship"`
+			} `json:"data"`
+		} `json:"applicant"`
+		Contacts struct {
+			Chat struct {
+				Value string `json:"value"`
+			} `json:"chat"`
+			Phones []struct {
+				Value  string `json:"value"`
+				Status any    `json:"status"`
+			} `json:"phones"`
+		} `json:"contacts"`
+		VacancyID  int64 `json:"vacancy_id"`
+		EmployeeID any   `json:"employee_id"`
+	} `json:"applies"`
 }
 
 func WebhookHandler(w http.ResponseWriter, r *http.Request) {
