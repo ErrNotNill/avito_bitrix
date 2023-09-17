@@ -91,18 +91,20 @@ func GetIdsOfResponses(w http.ResponseWriter, r *http.Request) {
 }
 
 func WebhookHandler(w http.ResponseWriter, r *http.Request) {
-	response := &Response{}
-	if r.Method == "POST" {
-		reader, err := io.ReadAll(r.Body)
-		log.Println("newBody", string([]byte(reader)))
-		json.Unmarshal(reader, &response)
-		if err != nil {
-			w.WriteHeader(http.StatusBadRequest)
-			return
+	if r.Header.Get("X-Secret") == "secret" {
+		response := &Response{}
+		if r.Method == "POST" {
+			reader, err := io.ReadAll(r.Body)
+			log.Println("newBody", string([]byte(reader)))
+			json.Unmarshal(reader, &response)
+			if err != nil {
+				w.WriteHeader(http.StatusBadRequest)
+				return
+			}
+			ApplyId = response.ApplyId
+			VacancyId = response.VacancyId
+			vacancy := GetVacancyInfo(VacancyId)
+			AddSmartProcess(vacancy.Title, 139, vacancy.Params.Address)
 		}
-		ApplyId = response.ApplyId
-		VacancyId = response.VacancyId
-		vacancy := GetVacancyInfo(VacancyId)
-		AddSmartProcess(vacancy.Title, 139, vacancy.Params.Address)
 	}
 }
