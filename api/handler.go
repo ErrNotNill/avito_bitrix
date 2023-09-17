@@ -93,7 +93,7 @@ func GetIdsOfResponses(w http.ResponseWriter, r *http.Request) {
 
 func GetByIds(applyId string) {
 	ids := &Ids{}
-	newReq := fmt.Sprintf(`{"ids": %s}`, applyId)
+	newReq := fmt.Sprintf(`{"ids": "%s"}`, applyId)
 	tr := bytes.NewReader([]byte(newReq))
 	token := GetToken()
 	fmt.Println("token from DB: ", token)
