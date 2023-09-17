@@ -43,7 +43,7 @@ func SetNotificationEnabled(w http.ResponseWriter, r *http.Request) {
 	r.Form.Add("url", notification.Url)
 
 	fmt.Println("token from DB: ", token)
-	urlApi := `https://onviz-api.ru/add_notification`
+	urlApi := `https://onviz-api.ru/avito_hook`
 	requestBody, err := json.Marshal(map[string]string{"url": urlApi, "secret": "secret"})
 
 	var bearer = "Bearer " + token
