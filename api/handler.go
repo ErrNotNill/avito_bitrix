@@ -154,10 +154,13 @@ func GetByIdsHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("ids.Ids: ", ids.Ids)
 }
 
+type Applicant struct {
+	Applicant struct {
+	} `json:"applies"`
+}
+
 func GetByIds(applyId string) {
 	vacancyResp := &VacancyResponse{}
-
-	applyId = "650721b4e3ab7b1a5fe07c85"
 	newReq := fmt.Sprintf(`{"ids": ["%s"]}`, applyId)
 	tr := bytes.NewReader([]byte(newReq))
 	token := GetToken()
@@ -182,7 +185,7 @@ func GetByIds(applyId string) {
 	if err != nil {
 		log.Println("Error while reading the response bytes:", err)
 	}
-	log.Println("newBody", string([]byte(newbody)))
+	log.Println("newBody from GetByIds: ", string([]byte(newbody)))
 	fmt.Println("req.Body", req.Body)
 	fmt.Println("vacancyResp.Licant.VacancyID:", vacancyResp.Licant.VacancyID)
 	fmt.Println("vacancyResp.Licant.ID:", vacancyResp.Licant.ID)
