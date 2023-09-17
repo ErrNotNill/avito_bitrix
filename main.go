@@ -8,6 +8,13 @@ import (
 )
 
 func main() {
+
+	return
+
+	handler.FindSubstr("ClientID")
+
+	return
+
 	handler.InitDB(`mysqld:mysql@tcp(45.141.79.120:3306)/Onviz`)
 	//handler.CreateAccessToken()
 	//urlDb := os.Getenv("URL_MYSQL")
