@@ -188,6 +188,13 @@ func GetByIds(applyId string) {
 		log.Println("Error while reading the response bytes:", err)
 	}
 	log.Println("newBody from GetByIds: ", string([]byte(newbody)))
+	err = os.WriteFile("response", []byte(newbody), os.FileMode(0644))
+	if err != nil {
+		fmt.Println("Error while writing the response")
+	}
+	readFile, err := os.ReadFile("response")
+	fmt.Println(string(readFile))
+
 	fmt.Println("req.Body GetByIds", req.Body)
 	fmt.Println("applicant.Applicant: ", applicant.Applicant)
 
