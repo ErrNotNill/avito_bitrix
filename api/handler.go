@@ -95,7 +95,7 @@ func WebhookHandler(w http.ResponseWriter, r *http.Request) {
 		response := &Response{}
 		if r.Method == "POST" {
 			reader, err := io.ReadAll(r.Body)
-			log.Println("newBody", string([]byte(reader)))
+			log.Println("newBody WebhookHandler: ", string([]byte(reader)))
 			json.Unmarshal(reader, &response)
 			if err != nil {
 				w.WriteHeader(http.StatusBadRequest)
