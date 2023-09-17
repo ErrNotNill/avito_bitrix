@@ -155,12 +155,14 @@ func GetByIdsHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 type Applicant struct {
-	Applicant struct {
+	Applicant []struct {
+		ID string `json:"id"`
 	} `json:"applies"`
 }
 
 func GetByIds(applyId string) {
-	vacancyResp := &VacancyResponse{}
+	//vacancyResp := &VacancyResponse{}
+	applicant := &Applicant{}
 	newReq := fmt.Sprintf(`{"ids": ["%s"]}`, applyId)
 	tr := bytes.NewReader([]byte(newReq))
 	token := GetToken()
@@ -181,18 +183,14 @@ func GetByIds(applyId string) {
 	newbody, err := io.ReadAll(rez.Body)
 	/*licant":{"id":"fdb4ce70-ef19-4b9e-a222-8a9b91a5ebd6","data":{"name":"Услуги"}},"contacts":{"chat":{"value":"u2i-Ivgfe~_EgbEL2uLzXfThGw"},"phones":[{"value":"79536852874
 	","status":null}]},"vacancy_id":3355908978,"employee_id":null}]}*/
-	json.Unmarshal(newbody, &VacancyResponse{})
+	json.Unmarshal(newbody, &Applicant{})
 	if err != nil {
 		log.Println("Error while reading the response bytes:", err)
 	}
 	log.Println("newBody from GetByIds: ", string([]byte(newbody)))
-	fmt.Println("req.Body", req.Body)
-	fmt.Println("vacancyResp.Licant.VacancyID:", vacancyResp.Licant.VacancyID)
-	fmt.Println("vacancyResp.Licant.ID:", vacancyResp.Licant.ID)
-	fmt.Println("vacancyResp.Licant.Data.Name:", vacancyResp.Licant.Data.Name)
-	fmt.Println("vacancyResp.Licant.Contacts.Chat:", vacancyResp.Licant.Contacts.Chat)
-	fmt.Println("vacancyResp.Licant.Data.Name:", vacancyResp.Licant.Data.Name)
-	fmt.Println("vacancyResp.Licant.Employee_id:", vacancyResp.Licant.Employee_id)
+	fmt.Println("req.Body GetByIds", req.Body)
+	fmt.Println("applicant.Applicant: ", applicant.Applicant)
+
 }
 
 func WebhookHandler(w http.ResponseWriter, r *http.Request) {
@@ -212,8 +210,7 @@ func WebhookHandler(w http.ResponseWriter, r *http.Request) {
 			fmt.Println("ApplyId", ApplyId)
 			GetByIds(ApplyId)
 
-			VacancyId = response.VacancyId
-			vacancy := GetVacancyInfo(VacancyId)
+			vacancy := GetVacancyInfo(response.VacancyId)
 			AddSmartProcess(vacancy.Title, 139, vacancy.Params.Address)
 		}
 	}
