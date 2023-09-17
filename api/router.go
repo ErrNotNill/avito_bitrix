@@ -11,5 +11,6 @@ func AvitoRouter() {
 	http.HandleFunc("/add_notification", WebhookHandler) //todo replace with SetNotificationEnabled
 	http.HandleFunc("/notifications", GetNotificationsInfo)
 	http.HandleFunc("/responses", GetIdsOfResponses)
+	http.HandleFunc("/get_by_ids", GetByIdsHandler)
 
 }
