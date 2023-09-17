@@ -91,7 +91,7 @@ func GetIdsOfResponses(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("token: ", bearer)
 }
 
-func GetInfoAboutAdvertisement() {
+/*func GetInfoAboutAdvertisement() {
 	ids := &Ids{}
 	newReq := fmt.Sprintf(`{"ids": "%s"}`, applyId)
 	tr := bytes.NewReader([]byte(newReq))
@@ -120,7 +120,7 @@ func GetInfoAboutAdvertisement() {
 	fmt.Println("req.Body", req.Body)
 	fmt.Println("token: ", bearer)
 	fmt.Println("ids.Ids: ", ids.Ids)
-}
+}*/
 
 func GetByIds(applyId string) {
 	ids := &Ids{}
