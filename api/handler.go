@@ -1,6 +1,7 @@
 package api
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -90,18 +91,52 @@ func GetIdsOfResponses(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("token: ", bearer)
 }
 
+func GetByIds(applyId string) {
+	ids := &Ids{}
+	newReq := fmt.Sprintf(`{"ids": %s}`, applyId)
+	tr := bytes.NewReader([]byte(newReq))
+	token := GetToken()
+	fmt.Println("token from DB: ", token)
+	var bearer = "Bearer " + token
+	url := `https://api.avito.ru/job/v1/applications/get_by_ids`
+	req, err := http.NewRequest("POST", url, tr)
+	if err != nil {
+		fmt.Println("Error")
+	}
+	req.Header.Add("Authorization", bearer)
+	newclient := &http.Client{}
+	rez, err := newclient.Do(req)
+	if err != nil {
+		log.Println("Error on response.\n[ERROR] -", err)
+	}
+	defer rez.Body.Close()
+	newbody, err := io.ReadAll(rez.Body)
+	json.Unmarshal(newbody, &ids)
+	if err != nil {
+		log.Println("Error while reading the response bytes:", err)
+	}
+	log.Println("newBody", string([]byte(newbody)))
+	fmt.Println("req.Body", req.Body)
+	fmt.Println("token: ", bearer)
+	fmt.Println("ids.Ids: ", ids.Ids)
+}
+
 func WebhookHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Header.Get("X-Secret") == "secret" {
 		response := &Response{}
 		if r.Method == "POST" {
+
 			reader, err := io.ReadAll(r.Body)
 			log.Println("newBody WebhookHandler: ", string([]byte(reader)))
+
 			json.Unmarshal(reader, &response)
 			if err != nil {
 				w.WriteHeader(http.StatusBadRequest)
 				return
 			}
 			ApplyId = response.ApplyId
+			GetByIds(ApplyId)
+
 			VacancyId = response.VacancyId
 			vacancy := GetVacancyInfo(VacancyId)
 			AddSmartProcess(vacancy.Title, 139, vacancy.Params.Address)
