@@ -116,6 +116,7 @@ func GetByIds(applyId string) {
 		log.Println("Error while reading the response bytes:", err)
 	}
 	log.Println("newBody", string([]byte(newbody)))
+
 	fmt.Println("req.Body", req.Body)
 	fmt.Println("token: ", bearer)
 	fmt.Println("ids.Ids: ", ids.Ids)
@@ -135,6 +136,7 @@ func WebhookHandler(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 			ApplyId = response.ApplyId
+			fmt.Println("ApplyId", ApplyId)
 			GetByIds(ApplyId)
 
 			VacancyId = response.VacancyId
