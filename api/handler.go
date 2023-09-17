@@ -10,6 +10,7 @@ import (
 	"os"
 	"regexp"
 	"strings"
+	"time"
 )
 
 func FindSubstr(substr string) string {
@@ -162,7 +163,7 @@ type Applicant struct {
 
 func GetByIds(applyId string) {
 	//vacancyResp := &VacancyResponse{}
-	applicant := &Applicant{}
+	applies := &Applies{}
 	newReq := fmt.Sprintf(`{"ids": ["%s"]}`, applyId)
 	tr := bytes.NewReader([]byte(newReq))
 	token := GetToken()
@@ -183,7 +184,7 @@ func GetByIds(applyId string) {
 	newbody, err := io.ReadAll(rez.Body)
 	/*licant":{"id":"fdb4ce70-ef19-4b9e-a222-8a9b91a5ebd6","data":{"name":"Услуги"}},"contacts":{"chat":{"value":"u2i-Ivgfe~_EgbEL2uLzXfThGw"},"phones":[{"value":"79536852874
 	","status":null}]},"vacancy_id":3355908978,"employee_id":null}]}*/
-	json.Unmarshal(newbody, &Applicant{})
+	json.Unmarshal(newbody, &applies)
 	if err != nil {
 		log.Println("Error while reading the response bytes:", err)
 	}
@@ -196,11 +197,64 @@ func GetByIds(applyId string) {
 	fmt.Println(string(readFile))
 
 	fmt.Println("req.Body GetByIds", req.Body)
-	fmt.Println("applicant.Applicant: ", applicant.Applicant)
+	fmt.Println("applicant.Applicant: ", applies.VacancyId)
 
 }
 
+type ApplicantNew struct {
+	Id            string `json:"id"`
+	NegotiationId int    `json:"negotiation_id"`
+	Type          string `json:"type"`
+	Applicant     struct {
+		Id       string `json:"id"`
+		ResumeId string `json:"resume_id"`
+		Data     struct {
+			Name        string `json:"name"`
+			Gender      string `json:"gender"`
+			Citizenship string `json:"citizenship"`
+		} `json:"data"`
+	} `json:"applicant"`
+	VacancyId int64 `json:"vacancy_id"`
+}
+
+type Applies struct {
+	Id            string    `json:"id"`
+	NegotiationId int       `json:"negotiation_id"`
+	Type          string    `json:"type"`
+	CreatedAt     time.Time `json:"created_at"`
+	UpdatedAt     time.Time `json:"updated_at"`
+	Prevalidation struct {
+		Status  string `json:"status"`
+		Summary []struct {
+			Label    string `json:"label"`
+			Value    string `json:"value"`
+			Variable string `json:"variable"`
+		} `json:"summary"`
+	} `json:"prevalidation"`
+	Applicant struct {
+		Id       string `json:"id"`
+		ResumeId string `json:"resume_id"`
+		Data     struct {
+			Name        string `json:"name"`
+			Gender      string `json:"gender"`
+			Citizenship string `json:"citizenship"`
+		} `json:"data"`
+	} `json:"applicant"`
+	Contacts struct {
+		Chat struct {
+			Value string `json:"value"`
+		} `json:"chat"`
+		Phones []struct {
+			Value  string      `json:"value"`
+			Status interface{} `json:"status"`
+		} `json:"phones"`
+	} `json:"contacts"`
+	VacancyId  int64       `json:"vacancy_id"`
+	EmployeeId interface{} `json:"employee_id"`
+}
+
 func WebhookHandler(w http.ResponseWriter, r *http.Request) {
+
 	if r.Header.Get("X-Secret") == "secret" {
 		response := &Response{}
 		if r.Method == "POST" {
