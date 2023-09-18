@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-func CreateAccessToken() {
+func CreateAccessToken() string {
 	ClientIDSettings := FindSettings(ClientID)
 	ClientSecretSettings := FindSettings(ClientSecret)
 	client := &http.Client{}
@@ -24,7 +24,10 @@ func CreateAccessToken() {
 	fmt.Println("string(body).CreateAccessToken : ", string(body))
 	fmt.Println("status code: ", post.StatusCode)
 	fmt.Println("authorize.AccessToken: ", auth.AccessToken)
+	token := GetToken()
+	fmt.Println("token from DB: ", token)
 	AddToken(auth)
+	return auth.AccessToken
 }
 
 func RefreshAccessToken() string {

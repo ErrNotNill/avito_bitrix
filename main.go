@@ -6,6 +6,8 @@ import (
 	"net/http"
 )
 
+const APIVersion = "v1"
+
 func main() {
 
 	api.InitDB(`mysqld:mysql@tcp(45.141.79.120:3306)/Onviz`)

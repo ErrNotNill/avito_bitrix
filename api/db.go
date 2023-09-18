@@ -9,8 +9,9 @@ import (
 var Db *sqlx.DB //global variable
 
 func InitDB(url string) (err error) {
-
-	Db, err = sqlx.Connect("mysql", url)
+	urlSettings := FindSettings("DatabaseUrl")
+	fmt.Println("urlSettings", urlSettings)
+	Db, err = sqlx.Connect("mysql", urlSettings)
 	if err != nil {
 		fmt.Println("not connected")
 		return

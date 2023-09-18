@@ -65,6 +65,8 @@ func FindSettings(substr string) string {
 
 func GetVacancyInfo(vacancyId int) *Vacancy {
 	token := GetToken()
+	//newToken := CreateAccessToken()
+
 	vacancy := &Vacancy{}
 	//fmt.Println("token from DB: ", token)
 	var bearer = "Bearer " + token
@@ -93,6 +95,8 @@ func GetVacancyInfo(vacancyId int) *Vacancy {
 
 func GetIdsOfResponses(w http.ResponseWriter, r *http.Request) {
 	token := GetToken()
+	//newToken := CreateAccessToken()
+
 	//fmt.Println("token from DB: ", token)
 	w.Write([]byte("use query params: {date:2023-06-12}"))
 
@@ -156,6 +160,8 @@ func GetByIdsHandler(w http.ResponseWriter, r *http.Request) {
 	newReq := fmt.Sprintf(`{"ids": ["%s"]}`, applyId)
 	tr := bytes.NewReader([]byte(newReq))
 	token := GetToken()
+	//newToken := CreateAccessToken()
+
 	fmt.Println("token from DB: ", token)
 	var bearer = "Bearer " + token
 	url := `https://api.avito.ru/job/v1/applications/get_by_ids`
@@ -188,6 +194,8 @@ func GetByIds(applyId string) (int, string, string, string, string) {
 	newReq := fmt.Sprintf(`{"ids": ["%s"]}`, applyId)
 	tr := bytes.NewReader([]byte(newReq))
 	token := GetToken()
+	//newToken := CreateAccessToken()
+
 	//fmt.Println("token from DB: ", token)
 	var bearer = "Bearer " + token
 	url := `https://api.avito.ru/job/v1/applications/get_by_ids`

@@ -1,9 +1,18 @@
 notification.Url = <https://onviz-api.ru/add_notification>,
 ClientID     = <YakK2QgXMECO2j5kmaHY>,
 ClientSecret = <27spzmSVPFQ7s2eL9shZD9Gv9k5G45MnjOjsACaT>,
-WebHookBitrixUrl = <https://onviz.bitrix24.ru/rest/13938/f72sxd4fph27nuq2/>
-DatabaseUrl = <username:password@tcp(ip:port)/databaseName>
+WebHookBitrixUrl = <https://onviz.bitrix24.ru/rest/13938/f72sxd4fph27nuq2/>,
+DatabaseUrl = <mysqld:mysql@tcp(45.141.79.120:3306)/Onviz>,
 
 ////////////////////////////////
 Требования к работоспособности файла - названия не менять.
 Вставляем только свои значения в фигурные скобки < >.
+DatabaseUrl заменяем значения базы данных
+
+скрипт создания таблицы MySQL
+create table Token (
+AccessToken varchar(255) not null,
+TokenType varchar(255) not null,
+ExpiresIn int
+);
+
