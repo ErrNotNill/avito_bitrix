@@ -29,7 +29,7 @@ func FindCustomFields(substr string) string {
 			if match != "" {
 				// Remove the "<" and ">" symbols
 				substring = match[1 : len(match)-1]
-				fmt.Println("Substring:", substring)
+				//fmt.Println("Substring:", substring)
 			} else {
 				fmt.Println("No match found")
 			}
@@ -54,7 +54,7 @@ func FindSettings(substr string) string {
 			if match != "" {
 				// Remove the "<" and ">" symbols
 				substring = match[1 : len(match)-1]
-				fmt.Println("Substring:", substring)
+				//fmt.Println("Substring:", substring)
 			} else {
 				fmt.Println("No match found")
 			}
@@ -66,7 +66,7 @@ func FindSettings(substr string) string {
 func GetVacancyInfo(vacancyId int) *Vacancy {
 	token := GetToken()
 	vacancy := &Vacancy{}
-	fmt.Println("token from DB: ", token)
+	//fmt.Println("token from DB: ", token)
 	var bearer = "Bearer " + token
 	url := `https://api.avito.ru/job/v2/vacancies/` + strconv.Itoa(vacancyId)
 	req, err := http.NewRequest("GET", url, nil)
@@ -85,15 +85,15 @@ func GetVacancyInfo(vacancyId int) *Vacancy {
 	if err != nil {
 		log.Println("Error while reading the response bytes:", err)
 	}
-	log.Println("newBody", string([]byte(newbody)))
-	fmt.Println("vacancy.Params.Address", vacancy.Params.Address)
-	fmt.Println("vacancy.Title: ", vacancy.Title)
+	//log.Println("newBody", string([]byte(newbody)))
+	//fmt.Println("vacancy.Params.Address", vacancy.Params.Address)
+	//fmt.Println("vacancy.Title: ", vacancy.Title)
 	return vacancy
 }
 
 func GetIdsOfResponses(w http.ResponseWriter, r *http.Request) {
 	token := GetToken()
-	fmt.Println("token from DB: ", token)
+	//fmt.Println("token from DB: ", token)
 	var bearer = "Bearer " + token
 	url := `https://api.avito.ru/job/v1/applications/get_ids?updatedAtFrom=2023-06-12`
 	req, err := http.NewRequest("GET", url, nil)
@@ -107,13 +107,13 @@ func GetIdsOfResponses(w http.ResponseWriter, r *http.Request) {
 		log.Println("Error on response.\n[ERROR] -", err)
 	}
 	defer rez.Body.Close()
-	newbody, err := io.ReadAll(rez.Body)
+	//newbody, err := io.ReadAll(rez.Body)
 	if err != nil {
 		log.Println("Error while reading the response bytes:", err)
 	}
-	log.Println("newBody", string([]byte(newbody)))
-	fmt.Println("req.Body", req.Body)
-	fmt.Println("token: ", bearer)
+	//log.Println("newBody", string([]byte(newbody)))
+	//fmt.Println("req.Body", req.Body)
+	//fmt.Println("token: ", bearer)
 }
 
 /*func GetInfoAboutAdvertisement() {
@@ -185,7 +185,7 @@ func GetByIds(applyId string) (int, string, string) {
 	newReq := fmt.Sprintf(`{"ids": ["%s"]}`, applyId)
 	tr := bytes.NewReader([]byte(newReq))
 	token := GetToken()
-	fmt.Println("token from DB: ", token)
+	//fmt.Println("token from DB: ", token)
 	var bearer = "Bearer " + token
 	url := `https://api.avito.ru/job/v1/applications/get_by_ids`
 	req, err := http.NewRequest("POST", url, tr)
@@ -200,15 +200,14 @@ func GetByIds(applyId string) (int, string, string) {
 	}
 	defer rez.Body.Close()
 	newbody, err := io.ReadAll(rez.Body)
-	/*licant":{"id":"fdb4ce70-ef19-4b9e-a222-8a9b91a5ebd6","data":{"name":"Услуги"}},"contacts":{"chat":{"value":"u2i-Ivgfe~_EgbEL2uLzXfThGw"},"phones":[{"value":"79536852874
-	","status":null}]},"vacancy_id":3355908978,"employee_id":null}]}*/
+
 	if err := json.Unmarshal(newbody, &root); err != nil {
 		fmt.Println("Error while reading the response bytes:", err)
 	}
 	for _, apply := range root.Applies {
-		fmt.Println("VacancyID:", apply.VacancyID)
-		fmt.Println("apply.Applicant.Data.Name:", apply.Applicant.Data.Name)
-		fmt.Println("apply.Contacts.Phones:", apply.Contacts.Phones)
+		//	fmt.Println("VacancyID:", apply.VacancyID)
+		//	fmt.Println("apply.Applicant.Data.Name:", apply.Applicant.Data.Name)
+		//	fmt.Println("apply.Contacts.Phones:", apply.Contacts.Phones)
 		var phoneValue string
 		for _, phone := range apply.Contacts.Phones {
 			phoneValue = phone.Value
@@ -216,14 +215,14 @@ func GetByIds(applyId string) (int, string, string) {
 
 		return apply.VacancyID, apply.Applicant.Data.Name, phoneValue
 	}
-	log.Println("newBody from GetByIds: ", string([]byte(newbody)))
+	//	log.Println("newBody from GetByIds: ", string([]byte(newbody)))
 	err = os.WriteFile("response", []byte(newbody), os.FileMode(0644))
 	if err != nil {
 		fmt.Println("Error while writing the response")
 	}
 	readFile, err := os.ReadFile("response")
 	fmt.Println(string(readFile))
-	fmt.Println("req.Body GetByIds", req.Body)
+	//fmt.Println("req.Body GetByIds", req.Body)
 	return 0, "", ""
 }
 
@@ -241,14 +240,14 @@ func WebhookHandler(w http.ResponseWriter, r *http.Request) {
 			}
 			ApplyId = response.ApplyId
 			vacancyId, Name, Phone := GetByIds(ApplyId)
-			fmt.Println("ApplyId", ApplyId)
-			fmt.Println("vacancyId", vacancyId)
-			fmt.Println("Name", Name)
-			fmt.Println("Phone", Phone)
-			//todo
+			fmt.Println("id_applies", ApplyId)
+			fmt.Println("id_vacancy", vacancyId)
+			fmt.Println("Имя: ", Name)
+			fmt.Println("Телефон: ", Phone)
+
 			vac := GetVacancyInfo(vacancyId)
-			fmt.Println("vac.Title", vac.Title)
-			fmt.Println("vac.Params.Address", vac.Params.Address)
+			fmt.Println("Название вакансии: ", vac.Title)
+			fmt.Println("Адрес вакансии: ", vac.Params.Address)
 			AddSmartProcess(vac.Title, 139, vac.Params.Address, Phone, Name)
 		}
 	}

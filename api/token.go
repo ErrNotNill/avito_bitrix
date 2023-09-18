@@ -9,10 +9,12 @@ import (
 )
 
 func CreateAccessToken() {
+	ClientIDSettings := FindSettings(ClientID)
+	ClientSecretSettings := FindSettings(ClientSecret)
 	client := &http.Client{}
 	auth := &Auth{}
 	grantType := "client_credentials"
-	url := fmt.Sprintf(`https://api.avito.ru/token?client_id=%s&client_secret=%s&grant_type=%s`, ClientID, ClientSecret, grantType)
+	url := fmt.Sprintf(`https://api.avito.ru/token?client_id=%s&client_secret=%s&grant_type=%s`, ClientIDSettings, ClientSecretSettings, grantType)
 	post, err := client.Post(url, "application/x-www-form-urlencoded", nil)
 	if err != nil {
 		log.Println("Failed to create token: ", err)

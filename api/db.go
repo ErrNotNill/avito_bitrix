@@ -34,15 +34,18 @@ func AddToken(auth *Auth) {
 func GetToken() string {
 	fmt.Println("db connected")
 	auth := &Auth{}
-	qry, err := Db.Query(`SELECT * FROM Token`)
+	qry, err := Db.Query(`SELECT AccessToken FROM Token`)
 	if err != nil {
 		fmt.Println(`error query`)
 	}
 	for qry.Next() {
-		if err := qry.Scan(&auth.AccessToken, &auth.ExpiresIn, &auth.TokenType); err != nil {
+		if err := qry.Scan(&auth.AccessToken); err != nil {
 			fmt.Println(`error scan`)
 			//log.Fatal(err)
 		}
 	}
 	return auth.AccessToken
+
+	//todo add in dbase token date created
+	//and check between date_created and expires date
 }
