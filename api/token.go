@@ -26,7 +26,7 @@ func CreateAccessToken() string {
 	fmt.Println("authorize.AccessToken: ", auth.AccessToken)
 	token := GetToken()
 	fmt.Println("token from DB: ", token)
-	AddToken(auth)
+	//AddToken(auth)
 	return auth.AccessToken
 }
 

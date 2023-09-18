@@ -10,7 +10,7 @@ const APIVersion = "v1"
 
 func main() {
 
-	api.InitDB(`mysqld:mysql@tcp(45.141.79.120:3306)/Onviz`)
+	//api.InitDB(`mysqld:mysql@tcp(45.141.79.120:3306)/Onviz`)
 	api.CreateAccessToken() //todo if you need to recreate token
 
 	api.AvitoRouter()
