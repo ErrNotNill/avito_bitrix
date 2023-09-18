@@ -216,10 +216,15 @@ func WebhookHandler(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 			ApplyId = response.ApplyId
-			fmt.Println("ApplyId", ApplyId)
 			vacancyId, Name, Phone := GetByIds(ApplyId)
+			fmt.Println("ApplyId", ApplyId)
+			fmt.Println("vacancyId", vacancyId)
+			fmt.Println("Name", Name)
+			fmt.Println("Phone", Phone)
 			//todo
 			vac := GetVacancyInfo(vacancyId)
+			fmt.Println("vac.Title", vac.Title)
+			fmt.Println("vac.Params.Address", vac.Params.Address)
 			AddSmartProcess(vac.Title, 139, vac.Params.Address, Phone, Name)
 		}
 	}
