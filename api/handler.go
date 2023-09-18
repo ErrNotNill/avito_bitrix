@@ -155,7 +155,7 @@ func GetByIdsHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("ids.Ids: ", ids.Ids)
 }
 
-func GetByIds(applyId string) int {
+func GetByIds(applyId string) (int, string, string) {
 	var root Root
 	//vacancyResp := &VacancyResponse{}
 	newReq := fmt.Sprintf(`{"ids": ["%s"]}`, applyId)
@@ -185,8 +185,12 @@ func GetByIds(applyId string) int {
 		fmt.Println("VacancyID:", apply.VacancyID)
 		fmt.Println("apply.Applicant.Data.Name:", apply.Applicant.Data.Name)
 		fmt.Println("apply.Contacts.Phones:", apply.Contacts.Phones)
+		var phoneValue string
+		for _, phone := range apply.Contacts.Phones {
+			phoneValue = phone.Value
+		}
 
-		return apply.VacancyID
+		return apply.VacancyID, apply.Applicant.Data.Name, phoneValue
 	}
 	log.Println("newBody from GetByIds: ", string([]byte(newbody)))
 	err = os.WriteFile("response", []byte(newbody), os.FileMode(0644))
@@ -196,15 +200,13 @@ func GetByIds(applyId string) int {
 	readFile, err := os.ReadFile("response")
 	fmt.Println(string(readFile))
 	fmt.Println("req.Body GetByIds", req.Body)
-	return 0
+	return 0, "", ""
 }
 
 func WebhookHandler(w http.ResponseWriter, r *http.Request) {
-
 	if r.Header.Get("X-Secret") == "secret" {
 		response := &Response{}
 		if r.Method == "POST" {
-
 			reader, err := io.ReadAll(r.Body)
 			log.Println("newBody WebhookHandler: ", string([]byte(reader)))
 
@@ -215,11 +217,10 @@ func WebhookHandler(w http.ResponseWriter, r *http.Request) {
 			}
 			ApplyId = response.ApplyId
 			fmt.Println("ApplyId", ApplyId)
-			vacancyId := GetByIds(ApplyId)
-
+			vacancyId, Name, Phone := GetByIds(ApplyId)
 			//todo
 			vac := GetVacancyInfo(vacancyId)
-			AddSmartProcess(vac.Title, 139, vac.Params.Address)
+			AddSmartProcess(vac.Title, 139, vac.Params.Address, Phone, Name)
 		}
 	}
 }
