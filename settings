@@ -1,3 +1,8 @@
-notification.Url = <https://example>,
-ClientID     = <Asd123>,
-ClientSecret = <Test321>,
+notification.Url = <https://onviz-api.ru/add_notification>,
+ClientID     = <YakK2QgXMECO2j5kmaHY>,
+ClientSecret = <27spzmSVPFQ7s2eL9shZD9Gv9k5G45MnjOjsACaT>,
+WebHookBitrixUrl = <https://onviz.bitrix24.ru/rest/13938/f72sxd4fph27nuq2/>
+
+////////////////////////////////
+Требования к работоспособности файла - названия не менять.
+Вставляем только свои значения в фигурные скобки < >.

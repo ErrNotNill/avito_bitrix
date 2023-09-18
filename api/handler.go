@@ -94,8 +94,11 @@ func GetVacancyInfo(vacancyId int) *Vacancy {
 func GetIdsOfResponses(w http.ResponseWriter, r *http.Request) {
 	token := GetToken()
 	//fmt.Println("token from DB: ", token)
+	w.Write([]byte("use query params: {date:2023-06-12}"))
+
+	date := r.FormValue("date")
 	var bearer = "Bearer " + token
-	url := `https://api.avito.ru/job/v1/applications/get_ids?updatedAtFrom=2023-06-12`
+	url := `https://api.avito.ru/job/v1/applications/get_ids?updatedAtFrom=` + date
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		fmt.Println("Error")
@@ -149,7 +152,7 @@ func GetIdsOfResponses(w http.ResponseWriter, r *http.Request) {
 
 func GetByIdsHandler(w http.ResponseWriter, r *http.Request) {
 	ids := &Ids{}
-	applyId := "650721b4e3ab7b1a5fe07c85"
+	applyId := r.FormValue("apply_id") //"650721b4e3ab7b1a5fe07c85"
 	newReq := fmt.Sprintf(`{"ids": ["%s"]}`, applyId)
 	tr := bytes.NewReader([]byte(newReq))
 	token := GetToken()
@@ -179,7 +182,7 @@ func GetByIdsHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("ids.Ids: ", ids.Ids)
 }
 
-func GetByIds(applyId string) (int, string, string) {
+func GetByIds(applyId string) (int, string, string, string, string) {
 	var root Root
 	//vacancyResp := &VacancyResponse{}
 	newReq := fmt.Sprintf(`{"ids": ["%s"]}`, applyId)
@@ -213,7 +216,7 @@ func GetByIds(applyId string) (int, string, string) {
 			phoneValue = phone.Value
 		}
 
-		return apply.VacancyID, apply.Applicant.Data.Name, phoneValue
+		return apply.VacancyID, apply.Applicant.Data.Name, phoneValue, apply.Applicant.ID, apply.Contacts.Chat.Value
 	}
 	//	log.Println("newBody from GetByIds: ", string([]byte(newbody)))
 	err = os.WriteFile("response", []byte(newbody), os.FileMode(0644))
@@ -223,7 +226,7 @@ func GetByIds(applyId string) (int, string, string) {
 	readFile, err := os.ReadFile("response")
 	fmt.Println(string(readFile))
 	//fmt.Println("req.Body GetByIds", req.Body)
-	return 0, "", ""
+	return 0, "", "", "", ""
 }
 
 func WebhookHandler(w http.ResponseWriter, r *http.Request) {
@@ -239,16 +242,17 @@ func WebhookHandler(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 			ApplyId = response.ApplyId
-			vacancyId, Name, Phone := GetByIds(ApplyId)
-			fmt.Println("id_applies", ApplyId)
+			vacancyId, Name, Phone, applies, chat := GetByIds(ApplyId)
+			fmt.Println("id_applies", applies)
 			fmt.Println("id_vacancy", vacancyId)
 			fmt.Println("Имя: ", Name)
 			fmt.Println("Телефон: ", Phone)
+			fmt.Println("chat_id: ", chat)
 
 			vac := GetVacancyInfo(vacancyId)
 			fmt.Println("Название вакансии: ", vac.Title)
 			fmt.Println("Адрес вакансии: ", vac.Params.Address)
-			AddSmartProcess(vac.Title, 139, vac.Params.Address, Phone, Name)
+			AddSmartProcess(vac.Title, 139, vac.Params.Address, Phone, Name, applies, chat)
 		}
 	}
 }

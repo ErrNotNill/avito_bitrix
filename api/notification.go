@@ -39,12 +39,13 @@ func GetNotificationsInfo(w http.ResponseWriter, r *http.Request) {
 
 func SetNotificationEnabled(w http.ResponseWriter, r *http.Request) {
 	token := GetToken()
+	urlSettings := FindSettings("notification")
 	notification := &Notification{}
-	r.Form.Add("url", notification.Url)
+	//r.Form.Add("url", notification.Url)
 
 	fmt.Println("token from DB: ", token)
-	urlApi := `https://onviz-api.ru/avito_hook`
-	requestBody, err := json.Marshal(map[string]string{"url": urlApi, "secret": "secret"})
+	//urlApi := `https://onviz-api.ru/avito_hook`
+	requestBody, err := json.Marshal(map[string]string{"url": urlSettings, "secret": "secret"})
 
 	var bearer = "Bearer " + token
 	url := fmt.Sprintf(`https://api.avito.ru/job/v1/applications/webhook`)
