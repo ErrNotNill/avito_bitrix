@@ -183,6 +183,9 @@ func GetByIds(applyId string) int {
 	}
 	for _, apply := range root.Applies {
 		fmt.Println("VacancyID:", apply.VacancyID)
+		fmt.Println("apply.Applicant.Data.Name:", apply.Applicant.Data.Name)
+		fmt.Println("apply.Contacts.Phones:", apply.Contacts.Phones)
+
 		return apply.VacancyID
 	}
 	log.Println("newBody from GetByIds: ", string([]byte(newbody)))
