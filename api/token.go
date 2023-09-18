@@ -50,7 +50,6 @@ func RefreshAccessToken() string {
 
 func AuthHandler(w http.ResponseWriter, r *http.Request) {
 	//url := fmt.Sprintf(`https://avito.ru/oauth?response_type=code&client_id=%s`, ClientID)
-
 	reader, err := io.ReadAll(r.Body)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)

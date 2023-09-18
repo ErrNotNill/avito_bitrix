@@ -10,10 +10,11 @@ import (
 )
 
 func GetNotificationsInfo(w http.ResponseWriter, r *http.Request) {
-	token := GetToken()
+	//token := GetToken()
+	newToken := CreateAccessToken()
 	notification := &Notification{}
-	fmt.Println("token from DB: ", token)
-	var bearer = "Bearer " + token
+	fmt.Println("token from DB: ", newToken)
+	var bearer = "Bearer " + newToken
 	url := `https://api.avito.ru/job/v1/applications/webhook`
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
@@ -38,16 +39,18 @@ func GetNotificationsInfo(w http.ResponseWriter, r *http.Request) {
 }
 
 func SetNotificationEnabled(w http.ResponseWriter, r *http.Request) {
-	token := GetToken()
+	//token := GetToken()
+	newToken := CreateAccessToken()
+
 	urlSettings := FindSettings("notification")
 	notification := &Notification{}
 	//r.Form.Add("url", notification.Url)
 
-	fmt.Println("token from DB: ", token)
+	fmt.Println("token from DB: ", newToken)
 	//urlApi := `https://onviz-api.ru/avito_hook`
 	requestBody, err := json.Marshal(map[string]string{"url": urlSettings, "secret": "secret"})
 
-	var bearer = "Bearer " + token
+	var bearer = "Bearer " + newToken
 	url := fmt.Sprintf(`https://api.avito.ru/job/v1/applications/webhook`)
 
 	req, err := http.NewRequest("PUT", url, bytes.NewBuffer(requestBody))

@@ -64,12 +64,12 @@ func FindSettings(substr string) string {
 }
 
 func GetVacancyInfo(vacancyId int) *Vacancy {
-	token := GetToken()
-	//newToken := CreateAccessToken()
+	//token := GetToken()
+	newToken := CreateAccessToken()
 
 	vacancy := &Vacancy{}
 	//fmt.Println("token from DB: ", token)
-	var bearer = "Bearer " + token
+	var bearer = "Bearer " + newToken
 	url := `https://api.avito.ru/job/v2/vacancies/` + strconv.Itoa(vacancyId)
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
@@ -94,14 +94,14 @@ func GetVacancyInfo(vacancyId int) *Vacancy {
 }
 
 func GetIdsOfResponses(w http.ResponseWriter, r *http.Request) {
-	token := GetToken()
-	//newToken := CreateAccessToken()
+	//token := GetToken()
+	newToken := CreateAccessToken()
 
 	//fmt.Println("token from DB: ", token)
 	w.Write([]byte("use query params: {date:2023-06-12}"))
 
 	date := r.FormValue("date")
-	var bearer = "Bearer " + token
+	var bearer = "Bearer " + newToken
 	url := `https://api.avito.ru/job/v1/applications/get_ids?updatedAtFrom=` + date
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
@@ -159,11 +159,11 @@ func GetByIdsHandler(w http.ResponseWriter, r *http.Request) {
 	applyId := r.FormValue("apply_id") //"650721b4e3ab7b1a5fe07c85"
 	newReq := fmt.Sprintf(`{"ids": ["%s"]}`, applyId)
 	tr := bytes.NewReader([]byte(newReq))
-	token := GetToken()
-	//newToken := CreateAccessToken()
+	//token := GetToken()
+	newToken := CreateAccessToken()
 
-	fmt.Println("token from DB: ", token)
-	var bearer = "Bearer " + token
+	fmt.Println("token from DB: ", newToken)
+	var bearer = "Bearer " + newToken
 	url := `https://api.avito.ru/job/v1/applications/get_by_ids`
 	req, err := http.NewRequest("POST", url, tr)
 	if err != nil {
@@ -193,11 +193,11 @@ func GetByIds(applyId string) (int, string, string, string, string) {
 	//vacancyResp := &VacancyResponse{}
 	newReq := fmt.Sprintf(`{"ids": ["%s"]}`, applyId)
 	tr := bytes.NewReader([]byte(newReq))
-	token := GetToken()
-	//newToken := CreateAccessToken()
+	//token := GetToken()
+	newToken := CreateAccessToken()
 
 	//fmt.Println("token from DB: ", token)
-	var bearer = "Bearer " + token
+	var bearer = "Bearer " + newToken
 	url := `https://api.avito.ru/job/v1/applications/get_by_ids`
 	req, err := http.NewRequest("POST", url, tr)
 	if err != nil {
