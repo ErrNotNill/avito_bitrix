@@ -25,12 +25,12 @@ func SmartProcessFields() string {
 
 func AddSmartProcess(title string, smartId int, address string, phone string, clientName string) {
 	newReq := fmt.Sprintf(`{
-entityTypeId:%v,
-fields:{
-title: %s,
-UF_CRM_18_1694959668872: %s,
-UF_CRM_18_1694004785 : %s,
-UF_CRM_18_1695016806010 : %s
+"entityTypeId":%v,
+"fields":{
+"title": "%s",
+"UF_CRM_18_1694959668872": "%s",
+"UF_CRM_18_1694004785" : "%s",
+"UF_CRM_18_1695016806010" : "%s"
 }
 }`, smartId, title, address, phone, clientName) //UF_CRM_18_1694959668872: address, UF_CRM_18_1694004785: phone, UF_CRM_18_1695016806010: name
 	tr := bytes.NewReader([]byte(newReq))
