@@ -17,6 +17,6 @@ func main() {
 	//handler.SetNotificationEnabled(Token) //todo if you need to change notification url
 	fmt.Println("server started")
 
-	http.ListenAndServe(":9090", nil)
+	http.ListenAndServe(":8080", nil)
 
 }

@@ -238,6 +238,7 @@ func GetByIds(applyId string) (int, string, string, string, string) {
 }
 
 func WebhookHandler(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("Hello"))
 	if r.Header.Get("X-Secret") == "secret" {
 		response := &Response{}
 		if r.Method == "POST" {

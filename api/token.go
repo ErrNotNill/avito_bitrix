@@ -9,8 +9,10 @@ import (
 )
 
 func CreateAccessToken() string {
-	ClientIDSettings := FindSettings(ClientID)
-	ClientSecretSettings := FindSettings(ClientSecret)
+	ClientIDSettings := FindSettings("ClientID")
+	ClientSecretSettings := FindSettings("ClientSecret")
+	fmt.Println("ClientIDSettings", ClientIDSettings)
+	fmt.Println("ClientSecretSettings", ClientSecretSettings)
 	client := &http.Client{}
 	auth := &Auth{}
 	grantType := "client_credentials"
