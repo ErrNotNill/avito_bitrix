@@ -9,10 +9,3 @@ DatabaseUrl = <mysqllogin:mysqlpass@tcp(ip:port)/databasName>,
 Вставляем только свои значения в фигурные скобки < >.
 DatabaseUrl заменяем значения базы данных
 
-скрипт создания таблицы MySQL
-create table Token (
-AccessToken varchar(255) not null,
-TokenType varchar(255) not null,
-ExpiresIn int
-);
-

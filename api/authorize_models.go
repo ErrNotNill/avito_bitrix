@@ -1,8 +1,10 @@
 package api
 
+import "os"
+
 var (
-	ClientID     = "YakK2QgXMECO2j5kmaHY"
-	ClientSecret = "27spzmSVPFQ7s2eL9shZD9Gv9k5G45MnjOjsACaT"
+	ClientID     = os.Getenv("CLIENT_ID")
+	ClientSecret = os.Getenv("CLIENT_SECRET")
 	Token        = ""
 )
 
