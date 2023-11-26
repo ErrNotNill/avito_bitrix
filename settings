@@ -1,6 +1,6 @@
-notification.Url = <https://server.moresales.top/add_notification>,
-ClientID     = <fZAN4pK5YoCgBCxftGZQ>,
-ClientSecret = <Qbc2zyZwLuaKa7b4SUMtedgpGKUsx9kEfXgcGntc>,
+notification.Url = <https://your-server/add_notification>,
+ClientID     = <your-client-id>,
+ClientSecret = <your-client-secret>,
 WebHookBitrixUrl = <https://yourdomain.bitrix24.ru/rest/13938/f72sxd4fph27nuq2/>,
 DatabaseUrl = <mysqllogin:mysqlpass@tcp(ip:port)/databasName>,
 
